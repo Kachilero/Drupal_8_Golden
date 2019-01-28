@@ -1,3 +1,55 @@
+# Docker-based Drupal stack
+
+[![Build Status](https://travis-ci.org/wodby/docker4drupal.svg?branch=master)](https://travis-ci.org/wodby/docker4drupal)
+
+## Introduction
+
+Docker4Drupal is a set of docker images optimized for Drupal. Use `docker-compose.yml` file from the [latest stable release](https://github.com/wodby/docker4drupal/releases) to spin up local environment on Linux, Mac OS X and Windows.
+
+* Read the docs on [**how to use**](https://wodby.com/docs/stacks/drupal/local#usage)
+* Follow [@wodbycloud](https://twitter.com/wodbycloud) for future announcements
+* Join [community slack](https://slack.wodby.com) to ask questions
+
+## Stack
+
+The Drupal stack consist of the following containers:
+
+| Container       | Versions            | Service name    | Image                              | Default |
+| --------------- | ------------------- | --------------- | ---------------------------------- | ------- |
+| [Nginx]         | 1.15, 1.14          | `nginx`         | [wodby/nginx]                      | ✓       |
+| [Apache]        | 2.4                 | `apache`        | [wodby/apache]                     |         |
+| [Drupal]        | 8, 7                | `php`           | [wodby/drupal]                     | ✓       |
+| [PHP]           | 7.3, 7.2, 7.1, 5.6* | `php`           | [wodby/drupal-php]                 |         |
+| [MariaDB]       | 10.3, 10.2, 10.1    | `mariadb`       | [wodby/mariadb]                    | ✓       |
+| [PostgreSQL]    | 11, 10, 9.x         | `postgres`      | [wodby/postgres]                   |         |
+| [Redis]         | 5, 4                | `redis`         | [wodby/redis]                      |         |
+| [Memcached]     | 1                   | `memcached`     | [wodby/memcached]                  |         |
+| [Varnish]       | 6.0, 4.1            | `varnish`       | [wodby/varnish]                    |         |
+| [Node.js]       | 10, 8, 6            | `node`          | [wodby/node]                       |         |
+| [Drupal node]   | 1.0                 | `drupal-node`   | [wodby/drupal-node]                |         |
+| [Solr]          | 7.x, 6.6, 5.5, 5.4  | `solr`          | [wodby/solr]                       |         |
+| [Elasticsearch] | 6.x, 5.6, 5.5, 5.4  | `elasticsearch` | [wodby/elasticsearch]              |         |
+| [Kibana]        | 6.x, 5.6, 5.5, 5.4  | `kibana`        | [wodby/kibana]                     |         |
+| [OpenSMTPD]     | 6.0                 | `opensmtpd`     | [wodby/opensmtpd]                  |         |
+| [Mailhog]       | latest              | `mailhog`       | [mailhog/mailhog]                  | ✓       |
+| [AthenaPDF]     | 2.10.0              | `athenapdf`     | [arachnysdocker/athenapdf-service] |         |
+| [Rsyslog]       | latest              | `rsyslog`       | [wodby/rsyslog]                    |         |
+| [Blackfire]     | latest              | `blackfire`     | [blackfire/blackfire]              |         |
+| [Webgrind]      | 1.5                 | `webgrind`      | [wodby/webgrind]                   |         |
+| [Xhprof viewer] | latest              | `xhprof`        | [wodby/xhprof]                     |         |
+| Adminer         | 4.6                 | `adminer`       | [wodby/adminer]                    |         |
+| phpMyAdmin      | latest              | `pma`           | [phpmyadmin/phpmyadmin]            |         |
+| Portainer       | latest              | `portainer`     | [portainer/portainer]              | ✓       |
+| Traefik         | latest              | `traefik`       | [_/traefik]                        | ✓       |
+
+Supported Drupal versions: 8 / 7
+
+*❕PHP 5.6 [has reached end of life](http://php.net/supported-versions.php) and no longer supported by PHP team, we strongly advise you to migrate to the latest stable 7.x version.
+
+## Documentation
+
+Full documentation is available at https://wodby.com/docs/stacks/drupal/local.
+
 # Composer template for Drupal projects
 
 [![Build Status](https://travis-ci.org/drupal-composer/drupal-project.svg?branch=8.x)](https://travis-ci.org/drupal-composer/drupal-project)
@@ -14,7 +66,7 @@ the [Documentation on drupal.org](https://www.drupal.org/node/2471553).
 First you need to [install composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
 
 > Note: The instructions below refer to the [global composer installation](https://getcomposer.org/doc/00-intro.md#globally).
-You might need to replace `composer` with `php composer.phar` (or similar) 
+You might need to replace `composer` with `php composer.phar` (or similar)
 for your setup.
 
 After that you can create the project:
@@ -23,7 +75,7 @@ After that you can create the project:
 composer create-project drupal-composer/drupal-project:8.x-dev some-dir --no-interaction
 ```
 
-With `composer require ...` you can download new dependencies to your 
+With `composer require ...` you can download new dependencies to your
 installation.
 
 ```
@@ -31,8 +83,8 @@ cd some-dir
 composer require drupal/devel:~1.0
 ```
 
-The `composer create-project` command passes ownership of all files to the 
-project that is created. You should create a new git repository, and commit 
+The `composer create-project` command passes ownership of all files to the
+project that is created. You should create a new git repository, and commit
 all files not excluded by the .gitignore file.
 
 ## What does the template do?
@@ -53,26 +105,26 @@ When installing the given `composer.json` some tasks are taken care of:
 
 ## Updating Drupal Core
 
-This project will attempt to keep all of your Drupal Core files up-to-date; the 
-project [drupal-composer/drupal-scaffold](https://github.com/drupal-composer/drupal-scaffold) 
-is used to ensure that your scaffold files are updated every time drupal/core is 
-updated. If you customize any of the "scaffolding" files (commonly .htaccess), 
-you may need to merge conflicts if any of your modified files are updated in a 
+This project will attempt to keep all of your Drupal Core files up-to-date; the
+project [drupal-composer/drupal-scaffold](https://github.com/drupal-composer/drupal-scaffold)
+is used to ensure that your scaffold files are updated every time drupal/core is
+updated. If you customize any of the "scaffolding" files (commonly .htaccess),
+you may need to merge conflicts if any of your modified files are updated in a
 new release of Drupal core.
 
 Follow the steps below to update your core files.
 
 1. Run `composer update drupal/core webflo/drupal-core-require-dev symfony/* --with-dependencies` to update Drupal Core and its dependencies.
-1. Run `git diff` to determine if any of the scaffolding files have changed. 
-   Review the files for any changes and restore any customizations to 
+1. Run `git diff` to determine if any of the scaffolding files have changed.
+   Review the files for any changes and restore any customizations to
   `.htaccess` or `robots.txt`.
 1. Commit everything all together in a single commit, so `web` will remain in
    sync with the `core` when checking out branches or running `git bisect`.
-1. In the event that there are non-trivial conflicts in step 2, you may wish 
-   to perform these steps on a branch, and use `git merge` to combine the 
-   updated core files with your customized files. This facilitates the use 
-   of a [three-way merge tool such as kdiff3](http://www.gitshah.com/2010/12/how-to-setup-kdiff-as-diff-tool-for-git.html). This setup is not necessary if your changes are simple; 
-   keeping all of your modifications at the beginning or end of the file is a 
+1. In the event that there are non-trivial conflicts in step 2, you may wish
+   to perform these steps on a branch, and use `git merge` to combine the
+   updated core files with your customized files. This facilitates the use
+   of a [three-way merge tool such as kdiff3](http://www.gitshah.com/2010/12/how-to-setup-kdiff-as-diff-tool-for-git.html). This setup is not necessary if your changes are simple;
+   keeping all of your modifications at the beginning or end of the file is a
    good strategy to keep merges easy.
 
 ## Generate composer.json from existing project
@@ -86,7 +138,7 @@ that the generated `composer.json` might differ from this project's file.
 
 ### Should I commit the contrib modules I download?
 
-Composer recommends **no**. They provide [argumentation against but also 
+Composer recommends **no**. They provide [argumentation against but also
 workrounds if a project decides to do it anyway](https://getcomposer.org/doc/faqs/should-i-commit-the-dependencies-in-my-vendor-directory.md).
 
 ### Should I commit the scaffolding files?
@@ -111,11 +163,11 @@ achieve that by registering `@composer drupal:scaffold` as post-install and post
 ```
 ### How can I apply patches to downloaded modules?
 
-If you need to apply patches (depending on the project being modified, a pull 
-request is often a better solution), you can do so with the 
+If you need to apply patches (depending on the project being modified, a pull
+request is often a better solution), you can do so with the
 [composer-patches](https://github.com/cweagans/composer-patches) plugin.
 
-To add a patch to drupal module foobar insert the patches section in the extra 
+To add a patch to drupal module foobar insert the patches section in the extra
 section of composer.json:
 ```json
 "extra": {
