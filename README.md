@@ -1,3 +1,36 @@
+# Drupal 8 base stack
+This repo uses [docker4drupal](https://github.com/wodby/docker4drupal) for a customizable Docker-based stack and
+[Drupal Composer Project](https://github.com/drupal-composer/drupal-project) to install and manage Drupal.
+
+## Spinning up a site
+1. Clone the repo
+2. Copy `.env.example` to `.env` and adjust the variables as needed. I suggest only changing the following:
+```
+PROJECT_NAME // the name of your project, it's used to name the containers
+PROJECT_BASE_URL // this will be the URL you'll access your site at
+DRUSH_OPTIONS_URI
+# The following are for the DB
+DB_NAME
+DB_USER
+DB_PASSWORD
+DB_ROOT_PASSWORD
+DB_HOST
+DB_DRIVER
+```
+All the rest deal with `docker4drupal`'s [Wodby](https://cloud.wodby.com/stacks) container stacks
+
+3. (OPTIONAL) You may want to mount the database containers in `docker-compose.yml`
+4. Now spin up the containers with either `docker-compose up -d` ( I would recommend adding `--pull` the firts time) or `make up`
+5. Login to the `PHP` container and run `composer install`. This will install Drupal 8 under `web`
+```bash
+docker exec -ti [PROJECT_NAME]_php /bin/bash
+composer install
+```
+6. You should be able to visit your site at `http://PROJECT_BASE_URL`
+
+Below are the `README` files for `docker4drupal` and `Composer Drupal Project`
+
+
 # Docker-based Drupal stack
 
 [![Build Status](https://travis-ci.org/wodby/docker4drupal.svg?branch=master)](https://travis-ci.org/wodby/docker4drupal)
@@ -49,6 +82,8 @@ Supported Drupal versions: 8 / 7
 ## Documentation
 
 Full documentation is available at https://wodby.com/docs/stacks/drupal/local.
+
+============================
 
 # Composer template for Drupal projects
 
