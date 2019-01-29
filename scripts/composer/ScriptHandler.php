@@ -36,8 +36,19 @@ class ScriptHandler {
     }
 
     // Prepare the settings file for installation
-    if (!$fs->exists($drupalRoot . '/sites/default/settings.php') and $fs->exists($drupalRoot . '/sites/default/default.settings.php')) {
-      $fs->copy($drupalRoot . '/sites/default/default.settings.php', $drupalRoot . '/sites/default/settings.php');
+    // Custom implementation
+    if (!$fs->exists($drupalRoot . '/sites/default/settings.php')) {
+      // We'll check if our custom file exitsts and if not we'll use the default one
+      $envBased = dirname(dirname(__FILE__)) . '/../env.based.settings.php';
+      if ($fs->exists($envBased)) {
+        $event->getIO()->write("env.base.settings.php file exists and is being copied");
+        $fs->copy($envBased, $drupalRoot . '/sites/default/settings.php');
+        $event->getIO()->write("Copied env.based.settings.php");
+      } else {
+        $event->getIO()->write("No env.based.settings.php file so we'll copy the example");
+        $fs->copy($drupalRoot . '/sites/default/default.settings.php', $drupalRoot . '/sites/default/settings.php');
+      }
+      // Now we'll resume the normal bootstraping.
       require_once $drupalRoot . '/core/includes/bootstrap.inc';
       require_once $drupalRoot . '/core/includes/install.inc';
       $settings['config_directories'] = [
